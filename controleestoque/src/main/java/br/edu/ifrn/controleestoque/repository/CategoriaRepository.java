@@ -1,4 +1,4 @@
-package br.edu.ifrn.repository;
+package br.edu.ifrn.controleestoque.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
