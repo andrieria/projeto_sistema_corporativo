@@ -1,36 +1,38 @@
-package br.edu.ifrn.controleestoque.domain.categoria;
+package br.edu.ifrn.controleestoque.domain.fabricante;
 
-import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-/*import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern; */
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Entity(name="categoria")
-@Table(name="categoria")
+@Table(name = "fabricante") //Nome usado em consultas SQL
+@Entity(name="fabricante") //Nome usado nas consultas JPQL (solução JPA)
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@EqualsAndHashCode(of="id")
-public class Categoria implements Serializable{
+@EqualsAndHashCode(of = "id")
+
+public class Fabricante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //No caso de PostgreSQl, seria GenerationType.SEQUENCE
     private Long id;
     @NotBlank
-    /*@Pattern(ege)*/
     private String nome;
+
+    //Caso necessário devolver produtos, seria com esta anotação 
+    //@OneToMany(mappedBy = "fabricante")
+    //List<Produto> produtos;
+
     
 }

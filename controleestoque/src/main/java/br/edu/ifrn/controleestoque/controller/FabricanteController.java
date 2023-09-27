@@ -1,6 +1,5 @@
 package br.edu.ifrn.controleestoque.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,52 +15,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.edu.ifrn.controleestoque.domain.categoria.Categoria;
-import br.edu.ifrn.controleestoque.repository.CategoriaRepository;
+import br.edu.ifrn.controleestoque.domain.fabricante.Fabricante;
+import br.edu.ifrn.controleestoque.repository.FabricanteRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("categorias")
-public class CategoriaController {
-
+@RequestMapping("fabricantes")
+public class FabricanteController {
+    
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private FabricanteRepository repository;
 
     @PostMapping
     @Transactional
-    public ResponseEntity cadastrar(@RequestBody @Valid Categoria categoria, UriComponentsBuilder uriBuilder){
-        Categoria categoriaLocal = categoriaRepository.save(categoria);
-        var uri = uriBuilder.path("/categorias/{id}").buildAndExpand(categoriaLocal.getId()).toUri();
+    public ResponseEntity cadastrar(@RequestBody @Valid Fabricante fabricante, UriComponentsBuilder uriBuilder){
+        Fabricante fabricanteLocal = repository.save(fabricante);
+        var uri = uriBuilder.path("/fabricantes/{id}").buildAndExpand(fabricanteLocal.getId()).toUri();
         return ResponseEntity.created(uri).build();
     } 
 
     @GetMapping("/{id}")
     public ResponseEntity detalhar (@PathVariable Long id) {
-        var categoria = categoriaRepository.getReferenceById(id);
-        return ResponseEntity.ok(categoria);
+        Fabricante fabricante = repository.getReferenceById(id);
+        return ResponseEntity.ok(fabricante);
     }
 
     @GetMapping
-    public ResponseEntity<Page<Categoria>> listar(@PageableDefault(size=4, sort = {"nome"}) Pageable paginacao){
-         var categorias = categoriaRepository.findAll(paginacao);
-         return ResponseEntity.ok(categorias);
+    public ResponseEntity<Page<Fabricante>> listar(@PageableDefault(size=4, sort = {"nome"}) Pageable paginacao){
+         var fabricantes = repository.findAll(paginacao);
+         return ResponseEntity.ok(fabricantes);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity excluir(@PathVariable Long id) {
-        var categoria = categoriaRepository.getReferenceById(id);
-        categoriaRepository.delete(categoria);
+        var fabricante = repository.getReferenceById(id);
+        repository.delete(fabricante);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<Categoria> atualizar (@RequestBody @Valid Categoria categoria) {
-        Categoria categoriaLocal = categoriaRepository.findById(categoria.getId()).get();
-        categoriaLocal.setNome(categoria.getNome());
-        return ResponseEntity.ok(categoriaLocal);
+    public ResponseEntity<Fabricante> atualizar (@RequestBody @Valid Fabricante fabricante) {
+        Fabricante fabricanteLocal = repository.findById(fabricante.getId()).get();
+        fabricanteLocal.setNome(fabricante.getNome());
+        return ResponseEntity.ok(fabricanteLocal);
     }
     
 }
+
+
